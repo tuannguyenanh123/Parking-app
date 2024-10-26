@@ -2,9 +2,26 @@
   "name": "Parking-app",
   "version": "1.0.0",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "format": "prettier  \"{apps,libs}/**/*.{ts,tsx,js,json}\" --ignore-path .gitignore",
+    "format:check": "yarn format --check",
+    "format:write": "yarn format --write",
+    "tsc": "yarn --parallel -r run tsc",
+    "lint": "yarn --parallel -r run lint",
+    "build": "yarn --parallel -r run build",
+    "validate": "yarn format:write && yarn tsc && yarn lint && yarn build",
+    "prepare": "husky install"
+  },
   "keywords": [],
   "main": "index.js",
   "author": "candy-dev",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^5.6.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3",
+    "husky": "^8.0.0"
+  }
 }
