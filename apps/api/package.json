@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@apollo/server": "^4.11.0",
+    "@autospace/sample-lib": "^1.0.0",
     "@nestjs/apollo": "^12.2.1",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.3.0",
@@ -29,7 +30,6 @@
     "@nestjs/graphql": "^12.2.1",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "*",
-    "@autospace/sample-lib": "*",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^7.4.2",
     "@prisma/client": "5.21.1",
