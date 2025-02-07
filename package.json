@@ -1,38 +1,25 @@
 {
-  "name": "autospace",
+  "name": "foundationx",
   "version": "1.0.0",
-  "private": true,
-  "workspaces": {
-    "packages": [
-      "apps/*",
-      "libs/*"
-    ],
-    "nohoist": [
-      "**/@nestjs",
-      "**/@nestjs/**"
-    ]
-  },
+  "description": "",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "pnpm exec nx run-many --target=build",
     "format": "prettier  \"{apps,libs}/**/*.{ts,tsx,js,json}\" --ignore-path .gitignore",
-    "format:check": "yarn format --check",
-    "format:write": "yarn format --write",
-    "tsc": "yarn nx run-many -t tsc",
-    "lint": "yarn nx run-many -t lint",
-    "build": "yarn nx run-many -t build",
-    "validate": "yarn format:write && yarn tsc && yarn lint && yarn build",
+    "format:check": "pnpm format --check",
+    "format:write": "pnpm format --write",
+    "lint": "pnpm exec nx run-many --target=lint",
+    "tsc": "pnpm exec nx run-many --target=tsc",
+    "validate": "pnpm format:write && pnpm tsc && pnpm lint",
     "prepare": "husky install"
   },
   "keywords": [],
-  "main": "index.js",
-  "author": "candy-dev",
-  "license": "MIT",
-  "dependencies": {
-    "typescript": "^5.6.3"
-  },
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
-    "prettier": "^3.3.3",
-    "typescript": "^5.6.3",
     "husky": "^8.0.0",
-    "nx": "20.1.2"
+    "lint-staged": "^15.2.0",
+    "nx": "17.2.7",
+    "prettier": "^2.8.8"
   }
 }
