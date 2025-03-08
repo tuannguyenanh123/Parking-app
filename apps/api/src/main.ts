@@ -12,7 +12,7 @@ async function bootstrap() {
   console.log('add ', add(3, 4))
 
   const config = new DocumentBuilder()
-    .setTitle('FoundationX | Karthick Ragavendran')
+    .setTitle('Packing app API documentation | Candy dev')
     .setDescription(
       `Looking for the graphql api?
       <br/>
