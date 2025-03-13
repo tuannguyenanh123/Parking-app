@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common'
 import { FindManyUserArgs, FindUniqueUserArgs } from './dtos/find.args'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import {
@@ -44,21 +48,40 @@ export class UsersService {
   }
 
   async login({ email, password }: LoginInput): Promise<AuthOutput> {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        Credentials: {
+          email,
+        },
+      },
+      include: {
+        Credentials: true,
+      },
+    })
+
+    if (!user) throw new UnauthorizedException('Invalid email or password')
+
     const credentials = await this.prisma.credentials.findUnique({
       where: { email },
       include: { user: true },
     })
 
-    if (
-      !credentials ||
-      !bcrypt.compareSync(password, credentials?.passwordHash)
-    ) {
+    const isPasswordValid = bcrypt.compareSync(
+      password,
+      user?.Credentials?.passwordHash,
+    )
+    if (!isPasswordValid) {
       throw new BadRequestException('Invalid email or password')
     }
 
-    const token = this.jwtService.sign({ uid: credentials.uid })
+    const token = this.jwtService.sign(
+      { uid: credentials.uid },
+      {
+        algorithm: 'HS256',
+      },
+    )
     return {
-      user: credentials.user,
+      user,
       token,
     }
   }
@@ -79,7 +102,6 @@ export class UsersService {
     // Hash the password
     const salt = bcrypt.genSaltSync()
     const passwordHash = bcrypt.hashSync(password, salt)
-
     const uid = uuid()
 
     // Create the user and credentials
