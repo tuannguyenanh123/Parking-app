@@ -9,11 +9,11 @@ export class BaseQueryDto {
   @IsOptional()
   take?: number
 
-  @IsString()
-  @IsOptional()
-  search?: string
-
   @IsOptional()
   @IsIn(['asc', 'desc'])
   order?: 'asc' | 'desc'
+
+  @IsString()
+  @IsOptional()
+  search?: string
 }

@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client'
 import { UserOrderByWithRelationInput } from './order-by.args'
 import { UserWhereInput, UserWhereUniqueInput } from './where.args'
 import { RestrictProperties } from 'src/common/dtos/common.input'
+import { DefaultArgs } from '@prisma/client/runtime/library'
 
 registerEnumType(Prisma.UserScalarFieldEnum, {
   name: 'UserScalarFieldEnum',
@@ -13,7 +14,7 @@ class FindManyUserArgsStrict
   implements
     RestrictProperties<
       FindManyUserArgsStrict,
-      Omit<Prisma.UserFindManyArgs, 'include' | 'select'>
+      Omit<Prisma.UserFindManyArgs, 'include' | 'select' | 'omit'>
     >
 {
   where: UserWhereInput

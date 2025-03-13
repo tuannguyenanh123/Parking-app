@@ -1,13 +1,17 @@
 {
-  "name": "@autospace/sample-lib",
+  "name": "@foundation/sample-lib",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "dev": "tsc",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
 }

@@ -8,31 +8,29 @@ import { ConfigModule } from '@nestjs/config'
 import { PrismaModule } from './common/prisma/prisma.module'
 import { UsersModule } from './models/users/users.module'
 import { JwtModule } from '@nestjs/jwt'
-
-//Move into a file lib
-const MAX_AGE = 60 * 60 * 24
+import { MAX_AGE } from '@foundation/util'
+import { ItemsModule } from './models/items/items.module'
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
-      signOptions: {
-        expiresIn: MAX_AGE,
-      },
+      signOptions: { expiresIn: MAX_AGE },
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       introspection: true,
-      fieldResolverEnhancers: ['guards'],
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       buildSchemaOptions: {
         numberScalarMode: 'integer',
       },
+      fieldResolverEnhancers: ['guards'],
     }),
+    ConfigModule.forRoot(),
     PrismaModule,
     UsersModule,
+    ItemsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

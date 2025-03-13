@@ -1,20 +1,17 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { FindManyUserArgs, FindUniqueUserArgs } from './dtos/find.args'
 import { PrismaService } from 'src/common/prisma/prisma.service'
 import {
+  RegisterWithCredentialsInput,
   RegisterWithProviderInput,
-  RegisterWithCredentialInput,
-  LoginInput,
-  LoginOutput,
 } from './dtos/create-user.input'
 import { UpdateUserInput } from './dtos/update-user.input'
+import { JwtService } from '@nestjs/jwt'
+import { AuthOutput, LoginInput } from './entity/user.entity'
+import { AuthProviderType } from '@prisma/client'
+
 import * as bcrypt from 'bcryptjs'
 import { v4 as uuid } from 'uuid'
-import { JwtService } from '@nestjs/jwt'
 
 @Injectable()
 export class UsersService {
@@ -23,12 +20,17 @@ export class UsersService {
     private readonly jwtService: JwtService,
   ) {}
 
-  registerWithProvider({ name, image, uid, type }: RegisterWithProviderInput) {
-    return this.prisma.user.create({
+  async registerWithProvider({
+    image,
+    name,
+    type,
+    uid,
+  }: RegisterWithProviderInput): Promise<AuthOutput> {
+    const user = await this.prisma.user.create({
       data: {
-        name,
-        image,
         uid,
+        image,
+        name,
         AuthProvider: {
           create: {
             type,
@@ -36,34 +38,56 @@ export class UsersService {
         },
       },
     })
+
+    const token = this.jwtService.sign({ uid: user.uid })
+    return { user, token }
+  }
+
+  async login({ email, password }: LoginInput): Promise<AuthOutput> {
+    const credentials = await this.prisma.credentials.findUnique({
+      where: { email },
+      include: { user: true },
+    })
+
+    if (
+      !credentials ||
+      !bcrypt.compareSync(password, credentials?.passwordHash)
+    ) {
+      throw new BadRequestException('Invalid email or password')
+    }
+
+    const token = this.jwtService.sign({ uid: credentials.uid })
+    return {
+      user: credentials.user,
+      token,
+    }
   }
 
   async registerWithCredentials({
-    name,
-    image,
     email,
+    name,
     password,
-  }: RegisterWithCredentialInput) {
+    image,
+  }: RegisterWithCredentialsInput): Promise<AuthOutput> {
     const existingUser = await this.prisma.credentials.findUnique({
-      where: {
-        email,
-      },
+      where: { email },
     })
-
     if (existingUser) {
-      throw new BadRequestException('User with this email already exists')
+      throw new Error('User already exists with this email.')
     }
 
-    // hash password
+    // Hash the password
     const salt = bcrypt.genSaltSync()
     const passwordHash = bcrypt.hashSync(password, salt)
+
     const uid = uuid()
 
-    return await this.prisma.user.create({
+    // Create the user and credentials
+    const user = await this.prisma.user.create({
       data: {
         name,
-        image,
         uid,
+        image,
         Credentials: {
           create: {
             email,
@@ -72,49 +96,16 @@ export class UsersService {
         },
         AuthProvider: {
           create: {
-            type: 'CREDENTIALS',
+            type: AuthProviderType.CREDENTIALS,
           },
         },
       },
-      include: {
-        Credentials: true,
-      },
-    })
-  }
-
-  async login({ email, password }: LoginInput): Promise<LoginOutput> {
-    const user = await this.prisma.user.findFirst({
-      where: {
-        Credentials: {
-          email,
-        },
-      },
-      include: {
-        Credentials: true,
-      },
     })
 
-    if (!user) {
-      throw new UnauthorizedException('Invalid email or password')
-    }
-
-    const isPasswordValid = bcrypt.compareSync(
-      password,
-      user.Credentials.passwordHash,
-    )
-    if (!isPasswordValid)
-      throw new UnauthorizedException('Invalid email or password')
-
-    const jwtToken = this.jwtService.sign(
-      { uid: user.uid },
-      {
-        algorithm: 'HS256',
-      },
-    )
-
+    const token = this.jwtService.sign({ uid: user.uid })
     return {
-      token: jwtToken,
       user,
+      token,
     }
   }
 

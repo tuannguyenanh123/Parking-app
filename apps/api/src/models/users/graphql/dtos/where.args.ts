@@ -5,6 +5,7 @@ import {
   RestrictProperties,
   StringFilter,
 } from 'src/common/dtos/common.input'
+import { ItemListRelationFilter } from 'src/models/items/graphql/dtos/where.args'
 
 @InputType()
 export class UserWhereUniqueInput {
@@ -18,16 +19,16 @@ export class UserWhereInputStrict
       UserWhereInputStrict,
       Omit<
         Prisma.UserWhereInput,
-        'Credentials' | 'AuthProvider' | 'Admin' | 'image'
+        'Credentials' | 'AuthProvider' | 'Admin' | 'Manager' | 'image'
       >
     >
 {
+  // Item: ItemListRelationFilter
+
   uid: StringFilter
   createdAt: DateTimeFilter
   updatedAt: DateTimeFilter
   name: StringFilter
-  // Todo: Add the below field decorator only to the $Enums types.
-  // @Field(() => $Enums.x)
 
   AND: UserWhereInput[]
   OR: UserWhereInput[]
