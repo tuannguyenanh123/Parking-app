@@ -31,11 +31,12 @@ export class UsersResolver {
   registerWithProvider(
     @Args('registerWithProviderInput') args: RegisterWithProviderInput,
   ) {
-    try {
-      return this.usersService.registerWithProvider(args)
-    } catch (error) {
-      throw new Error(error)
-    }
+    return this.usersService.registerWithProvider(args)
+    // try {
+    //   return this.usersService.registerWithProvider(args)
+    // } catch (error) {
+    //   throw new Error(error)
+    // }
   }
 
   @Mutation(() => AuthOutput)
@@ -43,11 +44,12 @@ export class UsersResolver {
     @Args('registerWithCredentialsInput')
     args: RegisterWithCredentialsInput,
   ) {
-    try {
-      return this.usersService.registerWithCredentials(args)
-    } catch (error) {
-      throw new Error(error)
-    }
+    return this.usersService.registerWithCredentials(args)
+    // try {
+    //   return this.usersService.registerWithCredentials(args)
+    // } catch (error) {
+    //   throw new Error(error)
+    // }
   }
 
   @Mutation(() => AuthOutput)
