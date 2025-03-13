@@ -21,7 +21,7 @@ export class ItemOrderByWithRelationInputStrict
   name: Prisma.SortOrder
   @Field(() => Prisma.SortOrder)
   uid: Prisma.SortOrder
-  user: UserOrderByWithRelationInput
+  // user: UserOrderByWithRelationInput
 }
 
 @InputType()

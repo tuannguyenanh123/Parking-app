@@ -22,10 +22,10 @@ export class AuthGuard implements CanActivate {
     const ctx = GqlExecutionContext.create(context)
     const req = ctx.getContext().req
     // Look for an internal API secret.
-    if (this.bypassWithApiSecret(req)) {
-      //  The auth check bypassed.
-      return true
-    }
+    // if (this.bypassWithApiSecret(req)) {
+    //   //  The auth check bypassed.
+    //   return true
+    // }
 
     await this.authenticateUser(req)
 
@@ -51,6 +51,7 @@ export class AuthGuard implements CanActivate {
 
   private async authenticateUser(req: any): Promise<void> {
     const bearerHeader = req.headers.authorization
+
     // Bearer eylskfdjlsdf309
     const token = bearerHeader?.split(' ')[1]
 
@@ -59,10 +60,27 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const user = await this.jwtService.verify(token)
-      req.user = user
+      const payload = await this.jwtService.verify(token)
+      const uid = payload.uid
+
+      if (!uid) {
+        throw new UnauthorizedException(
+          'Invalid token. No uid present in the token',
+        )
+      }
+
+      const user = await this.prisma.user.findUnique({
+        where: { uid },
+      })
+      if (!user) {
+        throw new UnauthorizedException(
+          'Invalid token. No user present with the token',
+        )
+      }
+      req.user = payload
     } catch (err) {
       console.error('Token validation error:', err)
+      throw err
     }
 
     if (!req.user) {

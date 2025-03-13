@@ -20,6 +20,9 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger'
 import { UserEntity } from './entity/user.entity'
+import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
+import { GetUserType } from '@foundation/util/types'
+import { checkRowLevelPermission } from 'src/common/auth/util'
 // import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
 // import { GetUserType } from 'src/common/util/types'
 
@@ -38,11 +41,16 @@ export class UsersController {
 
   @ApiOkResponse({ type: [UserEntity] })
   @Get()
-  findAll(@Query() { skip, take, order, sortBy }: UserQueryDto) {
+  findAll(
+    @Query() { skip, take, order, sortBy, searchBy, search }: UserQueryDto,
+  ) {
     return this.prisma.user.findMany({
       ...(skip ? { skip: +skip } : null),
       ...(take ? { take: +take } : null),
       ...(sortBy ? { orderBy: { [sortBy]: order || 'asc' } } : null),
+      ...(searchBy
+        ? { where: { [searchBy]: { contains: search, mode: 'insensitive' } } }
+        : null),
     })
   }
 
@@ -54,13 +62,17 @@ export class UsersController {
 
   @ApiOkResponse({ type: UserEntity })
   @ApiBearerAuth()
-  //   @AllowAuthenticated()
+  @AllowAuthenticated()
   @Patch(':uid')
-  update(
+  async update(
     @Param('uid') uid: string,
     @Body() updateUserDto: UpdateUser,
-    // @GetUser() user: GetUserType,
+    @GetUser() user: GetUserType,
   ) {
+    const userInfor = await this.prisma.user.findUnique({
+      where: { uid },
+    })
+    checkRowLevelPermission(user, userInfor?.uid)
     return this.prisma.user.update({
       where: { uid },
       data: updateUserDto,
@@ -68,9 +80,13 @@ export class UsersController {
   }
 
   @ApiBearerAuth()
-  //   @AllowAuthenticated()
+  @AllowAuthenticated()
   @Delete(':uid')
-  remove(@Param('uid') uid: string) {
+  async remove(@Param('uid') uid: string, @GetUser() user: GetUserType) {
+    const userInfor = await this.prisma.user.findUnique({
+      where: { uid },
+    })
+    checkRowLevelPermission(user, userInfor?.uid)
     return this.prisma.user.delete({ where: { uid } })
   }
 }

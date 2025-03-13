@@ -14,7 +14,7 @@ export class UserOrderByWithRelationInputStrict
       >
     >
 {
-  Item: ItemOrderByRelationAggregateInput
+  // Item: ItemOrderByRelationAggregateInput
   @Field(() => Prisma.SortOrder)
   uid: Prisma.SortOrder
   @Field(() => Prisma.SortOrder)

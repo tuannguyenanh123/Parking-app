@@ -19,11 +19,11 @@ export class UserWhereInputStrict
       UserWhereInputStrict,
       Omit<
         Prisma.UserWhereInput,
-        'Credentials' | 'AuthProvider' | 'image' | 'Admin' | 'Manager'
+        'Credentials' | 'AuthProvider' | 'Admin' | 'Manager' | 'image'
       >
     >
 {
-  Item: ItemListRelationFilter
+  // Item: ItemListRelationFilter
 
   uid: StringFilter
   createdAt: DateTimeFilter

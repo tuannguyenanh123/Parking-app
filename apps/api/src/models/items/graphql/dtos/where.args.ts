@@ -24,7 +24,7 @@ export class ItemWhereInputStrict
   name: StringFilter
   uid: StringFilter
 
-  user: UserRelationFilter
+  // user: UserRelationFilter
 
   AND: ItemWhereInput[]
   OR: ItemWhereInput[]

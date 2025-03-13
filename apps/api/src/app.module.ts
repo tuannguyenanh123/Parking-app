@@ -28,9 +28,7 @@ import { ItemsModule } from './models/items/items.module'
       fieldResolverEnhancers: ['guards'],
     }),
     ConfigModule.forRoot(),
-
     PrismaModule,
-
     UsersModule,
     ItemsModule,
   ],

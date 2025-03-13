@@ -8,9 +8,10 @@ import { Item } from './entity/item.entity'
 @Injectable()
 export class ItemsService {
   constructor(private readonly prisma: PrismaService) {}
-  create(createItemInput: CreateItemInput, uid: string) {
+  create(createItemInput?: CreateItemInput, uid?: string) {
     return this.prisma.item.create({
-      data: { ...createItemInput, user: { connect: { uid } } },
+      data: null,
+      // data: { ...createItemInput, user: { connect: { uid } } },
     })
   }
 

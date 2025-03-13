@@ -9,24 +9,25 @@ registerEnumType(Prisma.ItemScalarFieldEnum, {
 })
 
 @ArgsType()
-class FindManyItemArgsStrict
-  implements
-    RestrictProperties<
-      FindManyItemArgsStrict,
-      Omit<Prisma.ItemFindManyArgs, 'include' | 'select'>
-    >
-{
-  where: ItemWhereInput
-  orderBy: ItemOrderByWithRelationInput[]
-  cursor: ItemWhereUniqueInput
-  take: number
-  skip: number
-  @Field(() => [Prisma.ItemScalarFieldEnum])
-  distinct: Prisma.ItemScalarFieldEnum[]
-}
+// class FindManyItemArgsStrict
+//   implements
+//     RestrictProperties<
+//       FindManyItemArgsStrict,
+//       Omit<Prisma.ItemFindManyArgs, 'include' | 'select'>
+//     >
+// {
+//   where: ItemWhereInput
+//   orderBy: ItemOrderByWithRelationInput[]
+//   cursor: ItemWhereUniqueInput
+//   take: number
+//   skip: number
+//   @Field(() => [Prisma.ItemScalarFieldEnum])
+//   distinct: Prisma.ItemScalarFieldEnum[]
+// }
 
 @ArgsType()
-export class FindManyItemArgs extends PartialType(FindManyItemArgsStrict) {}
+// extends PartialType(FindManyItemArgsStrict)
+export class FindManyItemArgs {}
 
 @ArgsType()
 export class FindUniqueItemArgs {

@@ -43,7 +43,7 @@ export class ItemsResolver {
   myItems(@Args() args: FindManyItemArgs, @GetUser() user: GetUserType) {
     return this.itemsService.findAll({
       ...args,
-      where: { ...args.where, uid: { equals: user.uid } },
+      // where: { ...args.where, uid: { equals: user.uid } },
     })
   }
 

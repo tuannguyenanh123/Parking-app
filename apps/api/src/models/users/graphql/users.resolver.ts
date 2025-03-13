@@ -18,6 +18,7 @@ import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
 import { GetUserType } from '@foundation/util/types'
 import { Item } from 'src/models/items/graphql/entity/item.entity'
 import { PrismaService } from 'src/common/prisma/prisma.service'
+import { checkRowLevelPermission } from 'src/common/auth/util'
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -61,15 +62,17 @@ export class UsersResolver {
     }
   }
 
-  //   @AllowAuthenticated('admin')
+  // @AllowAuthenticated('admin')
   @Query(() => [User], { name: 'users' })
   findAll(@Args() args: FindManyUserArgs, @GetUser() user: GetUserType) {
     console.log('user ', user)
     return this.usersService.findAll(args)
   }
 
+  @AllowAuthenticated()
   @Query(() => User, { name: 'user' })
-  findOne(@Args() args: FindUniqueUserArgs) {
+  findOne(@Args() args: FindUniqueUserArgs, @GetUser() user: GetUserType) {
+    checkRowLevelPermission(user, args.where.uid)
     return this.usersService.findOne(args)
   }
 
