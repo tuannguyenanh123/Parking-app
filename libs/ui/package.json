@@ -10,9 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@foundation/forms": "workspace:^",
-    "@foundation/network": "workspace:^",
-    "@foundation/util": "workspace:^",
+    "@foundation/forms": "*",
+    "@foundation/network": "*",
+    "@foundation/util": "*",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",

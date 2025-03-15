@@ -26,8 +26,8 @@
   },
   "dependencies": {
     "@apollo/server": "^4.11.3",
-    "@foundation/sample-lib": "workspace:^",
-    "@foundation/util": "workspace:^",
+    "@foundation/sample-lib": "*",
+    "@foundation/util": "*",
     "@nestjs/apollo": "^12.2.2",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^3.1.1",

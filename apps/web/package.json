@@ -10,10 +10,10 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@foundation/forms": "workspace:^",
-    "@foundation/network": "workspace:^",
-    "@foundation/sample-lib": "workspace:^",
-    "@foundation/ui": "workspace:^",
+    "@foundation/forms": "*",
+    "@foundation/network": "*",
+    "@foundation/sample-lib": "*",
+    "@foundation/ui": "*",
     "next": "14.0.4",
     "next-auth": "^4.24.5",
     "react": "^18",
