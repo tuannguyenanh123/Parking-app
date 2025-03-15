@@ -1,7 +1,6 @@
 import {
   ArgsType,
   Field,
-  Float,
   InputType,
   ObjectType,
   registerEnumType,
