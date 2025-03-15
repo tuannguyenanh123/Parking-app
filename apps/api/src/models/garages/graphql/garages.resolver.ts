@@ -11,12 +11,17 @@ import { PrismaService } from 'src/common/prisma/prisma.service'
 
 @Resolver(() => Garage)
 export class GaragesResolver {
-  constructor(private readonly garagesService: GaragesService,
-    private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly garagesService: GaragesService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @AllowAuthenticated()
   @Mutation(() => Garage)
-  createGarage(@Args('createGarageInput') args: CreateGarageInput, @GetUser() user: GetUserType) {
+  createGarage(
+    @Args('createGarageInput') args: CreateGarageInput,
+    @GetUser() user: GetUserType,
+  ) {
     checkRowLevelPermission(user, args.uid)
     return this.garagesService.create(args)
   }
@@ -33,15 +38,23 @@ export class GaragesResolver {
 
   @AllowAuthenticated()
   @Mutation(() => Garage)
-  async updateGarage(@Args('updateGarageInput') args: UpdateGarageInput, @GetUser() user: GetUserType) {
-    const garage = await this.prisma.garage.findUnique({ where: { id: args.id } })
+  async updateGarage(
+    @Args('updateGarageInput') args: UpdateGarageInput,
+    @GetUser() user: GetUserType,
+  ) {
+    const garage = await this.prisma.garage.findUnique({
+      where: { id: args.id },
+    })
     checkRowLevelPermission(user, garage.uid)
     return this.garagesService.update(args)
   }
 
   @AllowAuthenticated()
   @Mutation(() => Garage)
-  async removeGarage(@Args() args: FindUniqueGarageArgs, @GetUser() user: GetUserType) {
+  async removeGarage(
+    @Args() args: FindUniqueGarageArgs,
+    @GetUser() user: GetUserType,
+  ) {
     const garage = await this.prisma.garage.findUnique(args)
     checkRowLevelPermission(user, garage.uid)
     return this.garagesService.remove(args)

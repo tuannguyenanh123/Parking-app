@@ -11,12 +11,17 @@ import { PrismaService } from 'src/common/prisma/prisma.service'
 
 @Resolver(() => Valet)
 export class ValetsResolver {
-  constructor(private readonly valetsService: ValetsService,
-    private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly valetsService: ValetsService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @AllowAuthenticated()
   @Mutation(() => Valet)
-  createValet(@Args('createValetInput') args: CreateValetInput, @GetUser() user: GetUserType) {
+  createValet(
+    @Args('createValetInput') args: CreateValetInput,
+    @GetUser() user: GetUserType,
+  ) {
     checkRowLevelPermission(user, args.uid)
     return this.valetsService.create(args)
   }
@@ -33,7 +38,10 @@ export class ValetsResolver {
 
   @AllowAuthenticated()
   @Mutation(() => Valet)
-  async updateValet(@Args('updateValetInput') args: UpdateValetInput, @GetUser() user: GetUserType) {
+  async updateValet(
+    @Args('updateValetInput') args: UpdateValetInput,
+    @GetUser() user: GetUserType,
+  ) {
     const valet = await this.prisma.valet.findUnique({ where: { id: args.id } })
     checkRowLevelPermission(user, valet.uid)
     return this.valetsService.update(args)
@@ -41,7 +49,10 @@ export class ValetsResolver {
 
   @AllowAuthenticated()
   @Mutation(() => Valet)
-  async removeValet(@Args() args: FindUniqueValetArgs, @GetUser() user: GetUserType) {
+  async removeValet(
+    @Args() args: FindUniqueValetArgs,
+    @GetUser() user: GetUserType,
+  ) {
     const valet = await this.prisma.valet.findUnique(args)
     checkRowLevelPermission(user, valet.uid)
     return this.valetsService.remove(args)

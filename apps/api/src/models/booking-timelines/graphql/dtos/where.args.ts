@@ -8,7 +8,13 @@ export class BookingTimelineWhereUniqueInput {
 }
 
 @InputType()
-export class BookingTimelineWhereInputStrict implements RestrictProperties<BookingTimelineWhereInputStrict, Prisma.BookingTimelineWhereInput> {
+export class BookingTimelineWhereInputStrict
+  implements
+    RestrictProperties<
+      BookingTimelineWhereInputStrict,
+      Prisma.BookingTimelineWhereInput
+    >
+{
   // Todo: Add the below field decorator only to the $Enums types.
   // @Field(() => $Enums.x)
 

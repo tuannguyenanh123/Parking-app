@@ -8,7 +8,10 @@ export class AddressWhereUniqueInput {
 }
 
 @InputType()
-export class AddressWhereInputStrict implements RestrictProperties<AddressWhereInputStrict, Prisma.AddressWhereInput> {
+export class AddressWhereInputStrict
+  implements
+    RestrictProperties<AddressWhereInputStrict, Prisma.AddressWhereInput>
+{
   // Todo: Add the below field decorator only to the $Enums types.
   // @Field(() => $Enums.x)
 
@@ -18,9 +21,7 @@ export class AddressWhereInputStrict implements RestrictProperties<AddressWhereI
 }
 
 @InputType()
-export class AddressWhereInput extends PartialType(
-  AddressWhereInputStrict,
-) {}
+export class AddressWhereInput extends PartialType(AddressWhereInputStrict) {}
 
 @InputType()
 export class AddressListRelationFilter {

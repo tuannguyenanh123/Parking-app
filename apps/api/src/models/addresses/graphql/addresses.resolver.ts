@@ -11,12 +11,17 @@ import { PrismaService } from 'src/common/prisma/prisma.service'
 
 @Resolver(() => Address)
 export class AddressesResolver {
-  constructor(private readonly addressesService: AddressesService,
-    private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly addressesService: AddressesService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @AllowAuthenticated()
   @Mutation(() => Address)
-  createAddress(@Args('createAddressInput') args: CreateAddressInput, @GetUser() user: GetUserType) {
+  createAddress(
+    @Args('createAddressInput') args: CreateAddressInput,
+    @GetUser() user: GetUserType,
+  ) {
     checkRowLevelPermission(user, args.uid)
     return this.addressesService.create(args)
   }
@@ -33,15 +38,23 @@ export class AddressesResolver {
 
   @AllowAuthenticated()
   @Mutation(() => Address)
-  async updateAddress(@Args('updateAddressInput') args: UpdateAddressInput, @GetUser() user: GetUserType) {
-    const address = await this.prisma.address.findUnique({ where: { id: args.id } })
+  async updateAddress(
+    @Args('updateAddressInput') args: UpdateAddressInput,
+    @GetUser() user: GetUserType,
+  ) {
+    const address = await this.prisma.address.findUnique({
+      where: { id: args.id },
+    })
     checkRowLevelPermission(user, address.uid)
     return this.addressesService.update(args)
   }
 
   @AllowAuthenticated()
   @Mutation(() => Address)
-  async removeAddress(@Args() args: FindUniqueAddressArgs, @GetUser() user: GetUserType) {
+  async removeAddress(
+    @Args() args: FindUniqueAddressArgs,
+    @GetUser() user: GetUserType,
+  ) {
     const address = await this.prisma.address.findUnique(args)
     checkRowLevelPermission(user, address.uid)
     return this.addressesService.remove(args)

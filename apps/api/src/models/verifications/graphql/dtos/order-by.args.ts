@@ -4,12 +4,14 @@ import { RestrictProperties } from 'src/common/dtos/common.input'
 
 @InputType()
 export class VerificationOrderByWithRelationInputStrict
-  implements RestrictProperties<VerificationOrderByWithRelationInputStrict, Prisma.VerificationOrderByWithRelationInput>
-{
+  implements
+    RestrictProperties<
+      VerificationOrderByWithRelationInputStrict,
+      Prisma.VerificationOrderByWithRelationInput
+    > {
   // Todo: Add below field decorator to the SortOrder properties.
   // @Field(() => Prisma.SortOrder)
 }
-
 
 @InputType()
 export class VerificationOrderByWithRelationInput extends PartialType(

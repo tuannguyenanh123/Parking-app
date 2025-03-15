@@ -4,12 +4,14 @@ import { RestrictProperties } from 'src/common/dtos/common.input'
 
 @InputType()
 export class BookingOrderByWithRelationInputStrict
-  implements RestrictProperties<BookingOrderByWithRelationInputStrict, Prisma.BookingOrderByWithRelationInput>
-{
+  implements
+    RestrictProperties<
+      BookingOrderByWithRelationInputStrict,
+      Prisma.BookingOrderByWithRelationInput
+    > {
   // Todo: Add below field decorator to the SortOrder properties.
   // @Field(() => Prisma.SortOrder)
 }
-
 
 @InputType()
 export class BookingOrderByWithRelationInput extends PartialType(

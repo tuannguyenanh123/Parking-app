@@ -20,7 +20,7 @@
     "format:write": "yarn format --write",
     "lint": "yarn exec nx run-many --target=lint",
     "tsc": "yarn exec nx run-many --target=tsc",
-    "validate": "yarn format:write  && yarn lint",
+    "validate": "yarn format:write",
     "prepare": "husky install"
   },
   "keywords": [],

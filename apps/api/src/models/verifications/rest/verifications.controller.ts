@@ -1,5 +1,12 @@
 import {
-  Controller, Get, Post, Body, Patch, Param, Delete, Query
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
 } from '@nestjs/common'
 
 import { PrismaService } from 'src/common/prisma/prisma.service'
@@ -17,7 +24,6 @@ import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
 import { GetUserType } from 'src/common/types'
 import { checkRowLevelPermission } from 'src/common/auth/util'
 
-
 @ApiTags('verifications')
 @Controller('verifications')
 export class VerificationsController {
@@ -27,7 +33,10 @@ export class VerificationsController {
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: VerificationEntity })
   @Post()
-  create(@Body() createVerificationDto: CreateVerification, @GetUser() user: GetUserType) {
+  create(
+    @Body() createVerificationDto: CreateVerification,
+    @GetUser() user: GetUserType,
+  ) {
     checkRowLevelPermission(user, createVerificationDto.uid)
     return this.prisma.verification.create({ data: createVerificationDto })
   }
@@ -57,7 +66,9 @@ export class VerificationsController {
     @Body() updateVerificationDto: UpdateVerification,
     @GetUser() user: GetUserType,
   ) {
-    const verification = await this.prisma.verification.findUnique({ where: { id } })
+    const verification = await this.prisma.verification.findUnique({
+      where: { id },
+    })
     checkRowLevelPermission(user, verification.uid)
     return this.prisma.verification.update({
       where: { id },
@@ -69,7 +80,9 @@ export class VerificationsController {
   @AllowAuthenticated()
   @Delete(':id')
   async remove(@Param('id') id: number, @GetUser() user: GetUserType) {
-    const verification = await this.prisma.verification.findUnique({ where: { id } })
+    const verification = await this.prisma.verification.findUnique({
+      where: { id },
+    })
     checkRowLevelPermission(user, verification.uid)
     return this.prisma.verification.delete({ where: { id } })
   }

@@ -8,7 +8,9 @@ export class ValetWhereUniqueInput {
 }
 
 @InputType()
-export class ValetWhereInputStrict implements RestrictProperties<ValetWhereInputStrict, Prisma.ValetWhereInput> {
+export class ValetWhereInputStrict
+  implements RestrictProperties<ValetWhereInputStrict, Prisma.ValetWhereInput>
+{
   // Todo: Add the below field decorator only to the $Enums types.
   // @Field(() => $Enums.x)
 
@@ -18,9 +20,7 @@ export class ValetWhereInputStrict implements RestrictProperties<ValetWhereInput
 }
 
 @InputType()
-export class ValetWhereInput extends PartialType(
-  ValetWhereInputStrict,
-) {}
+export class ValetWhereInput extends PartialType(ValetWhereInputStrict) {}
 
 @InputType()
 export class ValetListRelationFilter {

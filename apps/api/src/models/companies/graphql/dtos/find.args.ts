@@ -10,7 +10,11 @@ registerEnumType(Prisma.CompanyScalarFieldEnum, {
 
 @ArgsType()
 class FindManyCompanyArgsStrict
-  implements RestrictProperties<FindManyCompanyArgsStrict, Omit<Prisma.CompanyFindManyArgs, 'include' | 'select'>>
+  implements
+    RestrictProperties<
+      FindManyCompanyArgsStrict,
+      Omit<Prisma.CompanyFindManyArgs, 'include' | 'select'>
+    >
 {
   where: CompanyWhereInput
   orderBy: CompanyOrderByWithRelationInput[]

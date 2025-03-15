@@ -11,12 +11,17 @@ import { PrismaService } from 'src/common/prisma/prisma.service'
 
 @Resolver(() => Booking)
 export class BookingsResolver {
-  constructor(private readonly bookingsService: BookingsService,
-    private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly bookingsService: BookingsService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @AllowAuthenticated()
   @Mutation(() => Booking)
-  createBooking(@Args('createBookingInput') args: CreateBookingInput, @GetUser() user: GetUserType) {
+  createBooking(
+    @Args('createBookingInput') args: CreateBookingInput,
+    @GetUser() user: GetUserType,
+  ) {
     checkRowLevelPermission(user, args.uid)
     return this.bookingsService.create(args)
   }
@@ -33,15 +38,23 @@ export class BookingsResolver {
 
   @AllowAuthenticated()
   @Mutation(() => Booking)
-  async updateBooking(@Args('updateBookingInput') args: UpdateBookingInput, @GetUser() user: GetUserType) {
-    const booking = await this.prisma.booking.findUnique({ where: { id: args.id } })
+  async updateBooking(
+    @Args('updateBookingInput') args: UpdateBookingInput,
+    @GetUser() user: GetUserType,
+  ) {
+    const booking = await this.prisma.booking.findUnique({
+      where: { id: args.id },
+    })
     checkRowLevelPermission(user, booking.uid)
     return this.bookingsService.update(args)
   }
 
   @AllowAuthenticated()
   @Mutation(() => Booking)
-  async removeBooking(@Args() args: FindUniqueBookingArgs, @GetUser() user: GetUserType) {
+  async removeBooking(
+    @Args() args: FindUniqueBookingArgs,
+    @GetUser() user: GetUserType,
+  ) {
     const booking = await this.prisma.booking.findUnique(args)
     checkRowLevelPermission(user, booking.uid)
     return this.bookingsService.remove(args)

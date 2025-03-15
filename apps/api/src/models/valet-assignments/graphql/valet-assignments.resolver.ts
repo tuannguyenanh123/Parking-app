@@ -1,7 +1,10 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
 import { ValetAssignmentsService } from './valet-assignments.service'
 import { ValetAssignment } from './entity/valet-assignment.entity'
-import { FindManyValetAssignmentArgs, FindUniqueValetAssignmentArgs } from './dtos/find.args'
+import {
+  FindManyValetAssignmentArgs,
+  FindUniqueValetAssignmentArgs,
+} from './dtos/find.args'
 import { CreateValetAssignmentInput } from './dtos/create-valet-assignment.input'
 import { UpdateValetAssignmentInput } from './dtos/update-valet-assignment.input'
 import { checkRowLevelPermission } from 'src/common/auth/util'
@@ -11,12 +14,17 @@ import { PrismaService } from 'src/common/prisma/prisma.service'
 
 @Resolver(() => ValetAssignment)
 export class ValetAssignmentsResolver {
-  constructor(private readonly valetAssignmentsService: ValetAssignmentsService,
-    private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly valetAssignmentsService: ValetAssignmentsService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @AllowAuthenticated()
   @Mutation(() => ValetAssignment)
-  createValetAssignment(@Args('createValetAssignmentInput') args: CreateValetAssignmentInput, @GetUser() user: GetUserType) {
+  createValetAssignment(
+    @Args('createValetAssignmentInput') args: CreateValetAssignmentInput,
+    @GetUser() user: GetUserType,
+  ) {
     checkRowLevelPermission(user, args.uid)
     return this.valetAssignmentsService.create(args)
   }
@@ -33,15 +41,23 @@ export class ValetAssignmentsResolver {
 
   @AllowAuthenticated()
   @Mutation(() => ValetAssignment)
-  async updateValetAssignment(@Args('updateValetAssignmentInput') args: UpdateValetAssignmentInput, @GetUser() user: GetUserType) {
-    const valetAssignment = await this.prisma.valetAssignment.findUnique({ where: { id: args.id } })
+  async updateValetAssignment(
+    @Args('updateValetAssignmentInput') args: UpdateValetAssignmentInput,
+    @GetUser() user: GetUserType,
+  ) {
+    const valetAssignment = await this.prisma.valetAssignment.findUnique({
+      where: { id: args.id },
+    })
     checkRowLevelPermission(user, valetAssignment.uid)
     return this.valetAssignmentsService.update(args)
   }
 
   @AllowAuthenticated()
   @Mutation(() => ValetAssignment)
-  async removeValetAssignment(@Args() args: FindUniqueValetAssignmentArgs, @GetUser() user: GetUserType) {
+  async removeValetAssignment(
+    @Args() args: FindUniqueValetAssignmentArgs,
+    @GetUser() user: GetUserType,
+  ) {
     const valetAssignment = await this.prisma.valetAssignment.findUnique(args)
     checkRowLevelPermission(user, valetAssignment.uid)
     return this.valetAssignmentsService.remove(args)

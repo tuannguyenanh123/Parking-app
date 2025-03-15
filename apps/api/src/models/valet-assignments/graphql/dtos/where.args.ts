@@ -8,7 +8,13 @@ export class ValetAssignmentWhereUniqueInput {
 }
 
 @InputType()
-export class ValetAssignmentWhereInputStrict implements RestrictProperties<ValetAssignmentWhereInputStrict, Prisma.ValetAssignmentWhereInput> {
+export class ValetAssignmentWhereInputStrict
+  implements
+    RestrictProperties<
+      ValetAssignmentWhereInputStrict,
+      Prisma.ValetAssignmentWhereInput
+    >
+{
   // Todo: Add the below field decorator only to the $Enums types.
   // @Field(() => $Enums.x)
 

@@ -1,5 +1,12 @@
 import {
-  Controller, Get, Post, Body, Patch, Param, Delete, Query
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
 } from '@nestjs/common'
 
 import { PrismaService } from 'src/common/prisma/prisma.service'
@@ -17,7 +24,6 @@ import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator'
 import { GetUserType } from 'src/common/types'
 import { checkRowLevelPermission } from 'src/common/auth/util'
 
-
 @ApiTags('valet-assignments')
 @Controller('valet-assignments')
 export class ValetAssignmentsController {
@@ -27,9 +33,14 @@ export class ValetAssignmentsController {
   @ApiBearerAuth()
   @ApiCreatedResponse({ type: ValetAssignmentEntity })
   @Post()
-  create(@Body() createValetAssignmentDto: CreateValetAssignment, @GetUser() user: GetUserType) {
+  create(
+    @Body() createValetAssignmentDto: CreateValetAssignment,
+    @GetUser() user: GetUserType,
+  ) {
     checkRowLevelPermission(user, createValetAssignmentDto.uid)
-    return this.prisma.valetAssignment.create({ data: createValetAssignmentDto })
+    return this.prisma.valetAssignment.create({
+      data: createValetAssignmentDto,
+    })
   }
 
   @ApiOkResponse({ type: [ValetAssignmentEntity] })
@@ -57,7 +68,9 @@ export class ValetAssignmentsController {
     @Body() updateValetAssignmentDto: UpdateValetAssignment,
     @GetUser() user: GetUserType,
   ) {
-    const valetAssignment = await this.prisma.valetAssignment.findUnique({ where: { id } })
+    const valetAssignment = await this.prisma.valetAssignment.findUnique({
+      where: { id },
+    })
     checkRowLevelPermission(user, valetAssignment.uid)
     return this.prisma.valetAssignment.update({
       where: { id },
@@ -69,7 +82,9 @@ export class ValetAssignmentsController {
   @AllowAuthenticated()
   @Delete(':id')
   async remove(@Param('id') id: number, @GetUser() user: GetUserType) {
-    const valetAssignment = await this.prisma.valetAssignment.findUnique({ where: { id } })
+    const valetAssignment = await this.prisma.valetAssignment.findUnique({
+      where: { id },
+    })
     checkRowLevelPermission(user, valetAssignment.uid)
     return this.prisma.valetAssignment.delete({ where: { id } })
   }

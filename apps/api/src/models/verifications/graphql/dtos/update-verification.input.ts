@@ -3,6 +3,8 @@ import { InputType, PartialType } from '@nestjs/graphql'
 import { Verification } from '@prisma/client'
 
 @InputType()
-export class UpdateVerificationInput extends PartialType(CreateVerificationInput) {
+export class UpdateVerificationInput extends PartialType(
+  CreateVerificationInput,
+) {
   id: Verification['id']
 }

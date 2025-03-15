@@ -11,12 +11,17 @@ import { PrismaService } from 'src/common/prisma/prisma.service'
 
 @Resolver(() => Company)
 export class CompaniesResolver {
-  constructor(private readonly companiesService: CompaniesService,
-    private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly companiesService: CompaniesService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @AllowAuthenticated()
   @Mutation(() => Company)
-  createCompany(@Args('createCompanyInput') args: CreateCompanyInput, @GetUser() user: GetUserType) {
+  createCompany(
+    @Args('createCompanyInput') args: CreateCompanyInput,
+    @GetUser() user: GetUserType,
+  ) {
     checkRowLevelPermission(user, args.uid)
     return this.companiesService.create(args)
   }
@@ -33,15 +38,23 @@ export class CompaniesResolver {
 
   @AllowAuthenticated()
   @Mutation(() => Company)
-  async updateCompany(@Args('updateCompanyInput') args: UpdateCompanyInput, @GetUser() user: GetUserType) {
-    const company = await this.prisma.company.findUnique({ where: { id: args.id } })
+  async updateCompany(
+    @Args('updateCompanyInput') args: UpdateCompanyInput,
+    @GetUser() user: GetUserType,
+  ) {
+    const company = await this.prisma.company.findUnique({
+      where: { id: args.id },
+    })
     checkRowLevelPermission(user, company.uid)
     return this.companiesService.update(args)
   }
 
   @AllowAuthenticated()
   @Mutation(() => Company)
-  async removeCompany(@Args() args: FindUniqueCompanyArgs, @GetUser() user: GetUserType) {
+  async removeCompany(
+    @Args() args: FindUniqueCompanyArgs,
+    @GetUser() user: GetUserType,
+  ) {
     const company = await this.prisma.company.findUnique(args)
     checkRowLevelPermission(user, company.uid)
     return this.companiesService.remove(args)

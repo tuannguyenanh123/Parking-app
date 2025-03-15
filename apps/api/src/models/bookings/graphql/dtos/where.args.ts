@@ -8,7 +8,10 @@ export class BookingWhereUniqueInput {
 }
 
 @InputType()
-export class BookingWhereInputStrict implements RestrictProperties<BookingWhereInputStrict, Prisma.BookingWhereInput> {
+export class BookingWhereInputStrict
+  implements
+    RestrictProperties<BookingWhereInputStrict, Prisma.BookingWhereInput>
+{
   // Todo: Add the below field decorator only to the $Enums types.
   // @Field(() => $Enums.x)
 
@@ -18,9 +21,7 @@ export class BookingWhereInputStrict implements RestrictProperties<BookingWhereI
 }
 
 @InputType()
-export class BookingWhereInput extends PartialType(
-  BookingWhereInputStrict,
-) {}
+export class BookingWhereInput extends PartialType(BookingWhereInputStrict) {}
 
 @InputType()
 export class BookingListRelationFilter {

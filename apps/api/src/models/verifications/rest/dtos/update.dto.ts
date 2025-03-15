@@ -5,4 +5,3 @@ import { Verification } from '@prisma/client'
 export class UpdateVerification extends PartialType(CreateVerification) {
   id: Verification['id']
 }
-
